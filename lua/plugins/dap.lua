@@ -25,25 +25,19 @@ return {
       -- macOS の LLDB アダプタ
       dap.adapters.lldb = {
         type = "executable",
-        command = "/Applications/Xcode.app/Contents/Developer/usr/bin/lldb-vscode",
+        command = "/Applications/Xcode.app/Contents/Developer/usr/bin/lldb-dap",
         name = "lldb",
       }
 
-      dap.configurations.cpp = {
-        {
-          name = "Launch",
-          type = "lldb",
-          request = "launch",
-          program = function()
-            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-          end,
-          cwd = "${workspaceFolder}",
-          stopOnEntry = false,
-        },
-      }
 
-      dap.configurations.c = dap.configurations.cpp
-      dap.configurations.rust = dap.configurations.cpp
+      local cwd = vim.fn.getcwd()
+      local launch_path = cwd .. "/.vscode/launch.json"
+
+      print("[DAP] Loading launch.json from: " .. launch_path)
+
+      require("dap.ext.vscode").load(launch_path, {
+        lldb = { "c", "cpp", "rust" },
+      })
     end,
   },
 }
