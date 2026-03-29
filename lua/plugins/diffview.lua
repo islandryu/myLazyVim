@@ -3,7 +3,38 @@ return {
     "folke/snacks.nvim",
     keys = {
       { "<leader>gd", false },
-      { "<leader>gD", false },
+    },
+  },
+  {
+    "sindrets/diffview.nvim",
+    cmd = {
+      "DiffviewOpen",
+      "DiffviewClose",
+      "DiffviewFileHistory",
+    },
+    keys = {
+      { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Git Diff View" },
+      { "<leader>gD", "<cmd>DiffviewClose<cr>", desc = "Git Diff Close" },
+    },
+    opts = {
+      enhanced_diff_hl = true,
+      view = {
+        default = {
+          layout = "diff2_horizontal",
+          winbar_info = true,
+        },
+        file_history = {
+          layout = "diff2_horizontal",
+          winbar_info = true,
+        },
+      },
+      file_panel = {
+        listing_style = "tree",
+        win_config = {
+          position = "left",
+          width = 42,
+        },
+      },
     },
   },
   {
@@ -11,17 +42,18 @@ return {
     cmd = "Neogit",
     dependencies = {
       "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
     },
     keys = {
       {
-        "<leader>gd",
+        "<leader>gg",
         function()
           require("neogit").open({ kind = "split" })
         end,
         desc = "Git UI",
       },
       {
-        "<leader>gD",
+        "<leader>gG",
         "<cmd>Neogit kind=split cwd=%:p:h<cr>",
         desc = "Git UI (Current File Repo)",
       },
@@ -63,7 +95,7 @@ return {
         kind = "split",
       },
       integrations = {
-        diffview = false,
+        diffview = true,
       },
     },
   },
